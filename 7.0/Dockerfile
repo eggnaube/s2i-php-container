@@ -8,7 +8,8 @@ MAINTAINER SoftwareCollections.org <sclorg@redhat.com>
 EXPOSE 8080
 
 ENV PHP_VERSION=7.0 \
-    PATH=$PATH:/opt/rh/rh-php70/root/usr/bin
+    PATH=$PATH:/opt/rh/rh-php70/root/usr/bin:/opt/rh/rh-nodejs4/root/usr/bin \
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/rh/rh-nodejs4/root/usr/lib64
 
 LABEL io.k8s.description="Platform for building and running PHP 7.0 applications" \
       io.k8s.display-name="Apache 2.4 with PHP 7.0" \
@@ -21,10 +22,11 @@ RUN yum install -y centos-release-scl && \
     INSTALL_PKGS="rh-php70 rh-php70-php rh-php70-php-mysqlnd rh-php70-php-pgsql rh-php70-php-bcmath \
                   rh-php70-php-gd rh-php70-php-intl rh-php70-php-ldap rh-php70-php-mbstring rh-php70-php-pdo \
                   rh-php70-php-process rh-php70-php-soap rh-php70-php-opcache rh-php70-php-xml \
-                  rh-php70-php-gmp" && \
+                  rh-php70-php-gmp rh-nodejs4-npm" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
-    yum clean all -y
+    yum clean all -y && \
+    npm install -g bower grunt
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
