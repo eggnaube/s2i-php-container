@@ -26,7 +26,7 @@ RUN yum install -y centos-release-scl && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
     yum clean all -y && \
-    npm install -g bower grunt gulp-cli
+    npm install -g bower grunt gulp-cli phantomjs-prebuilt@2.1.14
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
